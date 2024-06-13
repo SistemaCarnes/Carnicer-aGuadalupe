@@ -36,8 +36,29 @@ $rowt = $res->fetch_assoc();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
+<style>
+  @media print {
+    body * {
+      visibility: hidden;
+      /* Oculta todos los elementos */
+    }
+
+    .printable,
+    .printable * {
+      visibility: visible;
+      /* Muestra solo los elementos con la clase 'printable' y sus descendientes */
+    }
+
+    .printable {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+  </style>
+<body>
 
 <body>
 <header>
@@ -119,16 +140,16 @@ $rowt = $res->fetch_assoc();
     <section class=" w-75 m-50 pb-5 pt-4 d-lg-inline">
           <div class="col-12 d-lg-inline">
          
-            <label ><b>Del Dia</b></label>
+            <label ><b>Seleccione el rango de fechas</b></label>
             <input type="date" name="from_date" style=" border-color: #f08030; border-radius: 5px; padding: 5px 10px;" value="<?php if (isset($_GET['from_date'])) {
                                                           echo $_GET['from_date'];
-                                                        } ?>" class="form-control">
+                                                        } ?>" class="form-control" min="<?= date('2024-01-01') ?>" max="<?= date('Y-m-d') ?>">
+                                                        
           
         
-            <label><b> Hasta el Dia</b></label>
             <input type="date" name="to_date"  style=" border-color: #f08030; border-radius: 5px; padding: 5px 10px;" value="<?php if (isset($_GET['to_date'])) {
                                                         echo $_GET['to_date'];
-                                                      } ?>" class="form-control">
+                                                      } ?>" class="form-control" min="<?= date('2024-01-01') ?>" max="<?= date('Y-m-d') ?>">
           </div>
       <div class="col-md-12 d-lg-inline">
           <button type="submit" class="btn btn-primary" style="background-color: #f08030; border-color: #f08030; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 15px;">Buscar</button>
@@ -143,6 +164,7 @@ $rowt = $res->fetch_assoc();
 
 <form action="">
 <div  class="row w-100">
+  <div class="printable">
   <?php
   include 'conexion_be.php';
 
@@ -211,32 +233,15 @@ echo "Error al ejecutar la consulta: " . mysqli_error($connection);
   }
 
   ?>
+  </div>
   <div>
-    <button id="btnExportar">Guardar Reporte</button>
+    <button class='btn btn-primary mb-4' onclick='window.print()'>Exportar a PDF</button>
   </div>
   </div>
   
 
   
-  <script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
-  <script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
-  <script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
-
-  <script>
-    const $btnExportar = document.querySelector("#btnExportar"),
-      $tabla = document.querySelector("#tablitadeuwu");
-
-    $btnExportar.addEventListener("click", function() {
-      let tableExport = new TableExport($tabla, {
-        exportButtons: false,
-        filename: "Reporte_Ventas_",
-        sheetname: "Reporte_Ventas_",
-      });
-      let datos = tableExport.getExportData();
-      let preferenciasDocumento = datos.tablitadeuwu.xlsx;
-      tableExport.export2file(preferenciasDocumento.data, preferenciasDocumento.mimeType, preferenciasDocumento.filename, preferenciasDocumento.fileExtension, preferenciasDocumento.merges, preferenciasDocumento.RTL, preferenciasDocumento.sheetname);
-    });
-  </script>
+  
   </form>
 </body>
 
