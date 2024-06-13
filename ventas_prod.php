@@ -130,31 +130,46 @@ $rowt = $res->fetch_assoc();
             <div class="row">
                 <div class="col-md-4">
                     <h2>Datos del producto</h2>
-
                     <form id="checkoutForm">
                         <div id="contenedorCodigo" class="mb-3">
-                            <select name="dato_seleccionado" id="idProducto">
+                            <select name="dato_seleccionado" id="idProducto" class="form-control">
                                 <option value="ID">Selecciona un Código</option>
-                                <!-- Aquí puedes cargar los datos desde la base de datos -->
                                 <?php
-                                $query = "SELECT codigo_produc FROM productos_con_inventario where existencia > 0";
+                                $query = "SELECT codigo_produc, nombre FROM productos_con_inventario WHERE existencia > 0";
                                 $resul = mysqli_query($conexion, $query);
-
                                 while ($rowt = mysqli_fetch_assoc($resul)) {
-                                    echo "<option value='" . $rowt['codigo_produc'] . "'>" . $rowt['codigo_produc'] . "</option>";
+                                    echo "<option value='" . $rowt['codigo_produc'] . "'>" . $rowt['codigo_produc'] . " - " . $rowt['nombre'] . "</option>";
                                 }
                                 ?>
                             </select>
-                            <button type="button" id="mostrarProducto">Mostrar</button>
+                            <button type="button" id="mostrarProducto" class="btn btn-info mt-2">Mostrar</button>
                         </div>
                         <div class="mb-3">
                             <input type="text" class="form-control" id="nombreProducto" placeholder="Este es el nombre del producto" readonly>
                         </div>
                         <div class="mb-3">
-                            <input type="number" class="form-control" id="precioProducto" placeholder="Este es el precio del producto" required>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="existenciaProducto" placeholder="Cantidad disponible del producto" readonly>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Kg</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <input type="number" class="form-control" id="cantidadProducto" placeholder="Ingrese la cantidad del producto" required>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input type="number" class="form-control" id="precioProducto" placeholder="Este es el precio del producto" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="cantidadProducto" placeholder="Ingrese la cantidad del producto" required min="0">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Kg</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <button type="button" class="btn btn-primary mt-3" id="btnAgregarProd">Agregar producto</button>

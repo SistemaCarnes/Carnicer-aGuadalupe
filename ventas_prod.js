@@ -142,7 +142,7 @@ $("#cancelar").click(function () {
 // Código para mostrar producto
 $("#mostrarProducto").click(function () {
     var codigoProducto = $("#idProducto").val();
-    if (codigoProducto !== "") {
+    if (codigoProducto !== "ID") {
         $.ajax({
             type: "POST",
             url: "obtener_producto.php",
@@ -151,8 +151,8 @@ $("#mostrarProducto").click(function () {
             success: function (response) {
                 if (response.success) {
                     $("#nombreProducto").val(response.nombre);
+                    $("#existenciaProducto").val(response.existencia); // Aquí se agrega la cantidad existente
                     $("#precioProducto").val(response.precio_venta);
-                    $("#precioProducto").removeAttr('readonly');
                 } else {
                     alert("Error al obtener el dato de la base de datos.");
                 }
@@ -162,3 +162,4 @@ $("#mostrarProducto").click(function () {
         alert("Por favor, selecciona un producto.");
     }
 });
+
